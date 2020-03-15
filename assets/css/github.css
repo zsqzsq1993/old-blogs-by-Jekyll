@@ -1,0 +1,342 @@
+article {
+  @include-when-export url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+  /** focus mode */
+}
+article :root {
+  --side-bar-bg-color: #fafafa;
+  --control-text-color: #777;
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Open Sans Regular'), url('./github/400.woff') format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: normal;
+  src: local('Open Sans Italic'), url('./github/400i.woff') format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: bold;
+  src: local('Open Sans Bold'), url('./github/700.woff') format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: bold;
+  src: local('Open Sans Bold Italic'), url('./github/700i.woff') format('woff');
+}
+article html {
+  font-size: 16px;
+}
+article body {
+  font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #333333;
+  line-height: 1.6;
+}
+article #write {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 30px;
+  padding-bottom: 100px;
+}
+article #write > ul:first-child,
+article #write > ol:first-child {
+  margin-top: 30px;
+}
+article a {
+  color: #4183C4;
+}
+article h1,
+article h2,
+article h3,
+article h4,
+article h5,
+article h6 {
+  position: relative;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  line-height: 1.4;
+  cursor: text;
+}
+article h1:hover a.anchor,
+article h2:hover a.anchor,
+article h3:hover a.anchor,
+article h4:hover a.anchor,
+article h5:hover a.anchor,
+article h6:hover a.anchor {
+  text-decoration: none;
+}
+article h1 tt,
+article h1 code {
+  font-size: inherit;
+}
+article h2 tt,
+article h2 code {
+  font-size: inherit;
+}
+article h3 tt,
+article h3 code {
+  font-size: inherit;
+}
+article h4 tt,
+article h4 code {
+  font-size: inherit;
+}
+article h5 tt,
+article h5 code {
+  font-size: inherit;
+}
+article h6 tt,
+article h6 code {
+  font-size: inherit;
+}
+article h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+article h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+article h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+article h4 {
+  font-size: 1.25em;
+}
+article h5 {
+  font-size: 1em;
+}
+article h6 {
+  font-size: 1em;
+  color: #777;
+}
+article p,
+article blockquote,
+article ul,
+article ol,
+article dl,
+article table {
+  margin: 0.8em 0;
+}
+article li > ol,
+article li > ul {
+  margin: 0 0;
+}
+article hr {
+  height: 2px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+  overflow: hidden;
+  box-sizing: content-box;
+}
+article li p.first {
+  display: inline-block;
+}
+article ul,
+article ol {
+  padding-left: 30px;
+}
+article ul:first-child,
+article ol:first-child {
+  margin-top: 0;
+}
+article ul:last-child,
+article ol:last-child {
+  margin-bottom: 0;
+}
+article blockquote {
+  border-left: 4px solid rgba(193, 193, 193, 0.89);
+  padding: 0 15px;
+  color: #777777;
+  background-color: #dfe2e5;
+  font-style: italic;
+}
+article blockquote blockquote {
+  padding-right: 0;
+}
+article table {
+  padding: 0;
+  word-break: initial;
+}
+article table tr {
+  border-top: 1px solid #dfe2e5;
+  margin: 0;
+  padding: 0;
+}
+article table tr:nth-child(2n),
+article thead {
+  background-color: #f8f8f8;
+}
+article table tr th {
+  font-weight: bold;
+  border: 1px solid #dfe2e5;
+  border-bottom: 0;
+  margin: 0;
+  padding: 6px 13px;
+}
+article table tr td {
+  border: 1px solid #dfe2e5;
+  margin: 0;
+  padding: 6px 13px;
+}
+article table tr th:first-child,
+article table tr td:first-child {
+  margin-top: 0;
+}
+article table tr th:last-child,
+article table tr td:last-child {
+  margin-bottom: 0;
+}
+article .CodeMirror-lines {
+  padding-left: 4px;
+}
+article .code-tooltip {
+  box-shadow: 0 1px 1px 0 rgba(0, 28, 36, 0.3);
+  border-top: 1px solid #eef2f2;
+}
+article .md-fences,
+article code,
+article tt {
+  border-radius: 3px;
+  padding: 0;
+  padding: 2px 4px 0px 4px;
+  font-size: 0.9em;
+}
+article code {
+  padding: 0 2px 0 2px;
+}
+article .md-fences {
+  margin-bottom: 15px;
+  margin-top: 15px;
+  padding-top: 8px;
+  padding-bottom: 6px;
+}
+article .md-task-list-item > input {
+  margin-left: -1.3em;
+}
+@media print {
+  article html {
+    font-size: 13px;
+  }
+  article table,
+  article pre {
+    page-break-inside: avoid;
+  }
+  article pre {
+    word-wrap: break-word;
+  }
+}
+article .md-fences {
+  background-color: #f8f8f8;
+}
+article #write pre.md-meta-block {
+  padding: 1rem;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border: 0;
+  border-radius: 3px;
+  color: #777777;
+  margin-top: 0 !important;
+}
+article .mathjax-block > .code-tooltip {
+  bottom: 0.375rem;
+}
+article .md-mathjax-midline {
+  background: #fafafa;
+}
+article #write > h3.md-focus:before {
+  left: -1.5625rem;
+  top: 0.375rem;
+}
+article #write > h4.md-focus:before {
+  left: -1.5625rem;
+  top: 0.28571429rem;
+}
+article #write > h5.md-focus:before {
+  left: -1.5625rem;
+  top: 0.28571429rem;
+}
+article #write > h6.md-focus:before {
+  left: -1.5625rem;
+  top: 0.28571429rem;
+}
+article .md-image > .md-meta {
+  /*border: 1px solid #ddd;*/
+  border-radius: 3px;
+  padding: 2px 0px 0px 4px;
+  font-size: 0.9em;
+  color: inherit;
+}
+article .md-tag {
+  color: #a7a7a7;
+  opacity: 1;
+}
+article .md-toc {
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+article .sidebar-tabs {
+  border-bottom: none;
+}
+article #typora-quick-open {
+  border: 1px solid #ddd;
+  background-color: #f8f8f8;
+}
+article #typora-quick-open-item {
+  background-color: #FAFAFA;
+  border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+  border-style: solid;
+  border-width: 1px;
+}
+article .on-focus-mode blockquote {
+  border-left-color: rgba(85, 85, 85, 0.12);
+}
+article header,
+article .context-menu,
+article .megamenu-content,
+article footer {
+  font-family: "Segoe UI", "Arial", sans-serif;
+}
+article .file-node-content:hover .file-node-icon,
+article .file-node-content:hover .file-node-open-state {
+  visibility: visible;
+}
+article .mac-seamless-mode #typora-sidebar {
+  background-color: #fafafa;
+  background-color: var(--side-bar-bg-color);
+}
+article .md-lang {
+  color: #b4654d;
+}
+article .html-for-mac .context-menu {
+  --item-hover-bg-color: #E6F0FE;
+}
+article #md-notification .btn {
+  border: 0;
+}
+article .dropdown-menu .divider {
+  border-color: #e5e5e5;
+}
+article .ty-preferences .window-content {
+  background-color: #fafafa;
+}
+article .ty-preferences .nav-group-item.active {
+  color: white;
+  background: #999;
+}
+/*# sourceMappingURL=github.css.map */

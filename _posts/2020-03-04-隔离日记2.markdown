@@ -1,0 +1,272 @@
+---
+layout: post
+title: "隔离日记2 - JavaScript 类型"
+description: "这是一篇关于JavaScript 高级程序设计第5章的读书笔记。"
+tags: 
+ - JavaScript
+ - Diary
+---
+被隔离已经快一周了，想起在澳洲的时候也经常呆在房间里，一呆就是好几天。那时候每天都是浑浑噩噩。不过也有很好的回忆，确实是一段不可多得的时光。今天简单记录一下JavaScript中的引用类型。
+
+![1](/images/2020-03-04/1.jpeg)
+
+![1](/images/2020-03-04/2.jpeg)
+
+## 一、 引用类型有哪些呢？
+
+JavaScript中的数据类型由Undefined、Null、Number、String、Boolean五种基本数据类型加Object一种复杂数据类型组成。而Object又由一些引用类型（**继承**）：
+
+* Array
+* Date
+* RegExp
+* Function
+* 基本包装类型(Boolean, String, Number)
+* Global & window
+
+## 二、Object
+
+Object是所有引用类型的母体。声明该类型的实例有**对象字面量**和**构造函数**两种。
+
+#### 1. 构造函数：
+
+```javascript
+/*点表示发，比较推荐*/
+let person = new Object();
+a.name = "Dolly";
+a.age  = 26;
+
+/*方括号表示法，一般用于变量赋值*/
+a["name"] = "Dolly";
+age = 26;
+a["age"]  = age;
+```
+
+#### 2. 对象字面量
+
+```javascript
+let person = {
+  "name": "Dolly",
+  "age":26
+};
+```
+
+## 三、Array
+
+JavaScript中的Array可以储存任意多种类型的变量，且长度也可自由调整，充分体现了动态语言的灵活性。
+
+#### 1. 构造
+
+```javascript
+a = new Array(); 
+a = new Array(2);//预留两个长度
+a = new Array("dolly",14);
+a = [];
+a = [1,2,"Dolly",true]; 
+
+alert(a instanceof Array);//true
+alert(Array.isArray(a));//true
+```
+
+#### 2.转换
+
+引用类型都有一个`toString() valueOf() toLocalString()`的方法用于在“打印”表示时转换为字符串。
+
+```javascript
+a = ["dolly","Vera","Jason"];
+alter(a.toString()); // dolly,Vera,Jason
+alter(a.valueOf());//dolly,Vera,Jason
+alter(a.join("||"));//dolly||Vera||Jason  Default using ","
+```
+
+#### 3. 栈 - LIFO & 队列 - FIFO
+
+`push`和`pop`可以实现类似栈的存取，也可以理解为Python中的`append`和`pop`
+
+```javascript
+let colors = ["red", "blue", "yellow"];
+a = colors.push("grey"); // a = 4
+a = colors.push("white");// a = 5
+alter(colors); // ["red", "blue", "yellow","grey","white"]
+a = colors.pop(); // a = "white"
+```
+
+队列可以以`shift`和`unshift`实现，实现方法与上述类似。
+
+#### 4. 排序
+
+倒序用`reverse() sort()`都会在原Array上做出改变。`sort()`的排序很坑爹，它会把Array中的元素转变为字符串再按照对应的编码进行排序。对类似`[1,4,2,6,3]`排序正确做法如下：
+
+```javascript
+//从小到大
+a = [1,4,2,6,3]
+function compare1(value1, value2){
+  if (value1 < value2) return -1; //可以理解为-1不换，1就是换
+  if (value1 > value2) return 1;
+  if (value1 === value2) return 0;
+}
+function compare2(value1, value2){
+  return value1 - value2;
+}
+a.sort(compare1);
+a.sort(compare2);
+```
+
+#### 5. slice & splice
+
+`slice`方法用于取子集，`splice`方法用于任意位置的删除或添加：
+
+```javascript
+//slice
+let colors = [1,2,3,4,5];
+alter(colors.slice(1)); //[2,3,4,5]
+alter(colors.slice(1,3)); //[2,3]
+//splice
+let colors  = ["red","green","blue"];
+let removed = colors.splice(0,1); // removed = ["red"], colors = ["green","blue"]
+
+removed = colors.splice(1,0,"yellow","orange");
+// removed = [], colors = ["green", "yellow","orange","blue"]
+
+removed = colors.splice(1,1,"red","purple");
+//removde = ["yellow"]
+//colors  = ["green","red","purple","orange","blue"]
+```
+
+#### 6. Array 其他一些有趣的方法
+
+* `indexOf()` & `lastIndexOf()` 
+
+```javascript
+/* 第二项表示开始查找的位置*/
+let numbers = [1,3,4,6,3,2,1,4];
+alert(numbers.indexOf(4)); //2
+alert(numbers.indexOf(4,3)); //7
+alert(numbers.lastIndexOf(4)); //7
+alert(numbers.lastIndexOf(4,1)); //2
+```
+
+如果没有查找到，返回-1
+
+* `every() filter() forEach() map() some()`
+
+```javascript
+numbers = [1,2,3,4,5,4,3,2,1]
+let result = numbers.every(function(item,index,array){
+  return item > 2;
+}); // false
+
+let result = numbers.filter(function(item,index,array){
+  return item > 2;
+}); // [3,4,5,4,3]
+
+let result = numbers.filter(function(item,index,array){
+  return item * 2;
+}); // [2,4,6,8,10,8,6,4,2]
+
+//some与every类似，不过返回的是true
+```
+
+* `reduce() reduceRight()`归并
+
+## 四、Function
+
+#### 1. 函数声明 & 函数表达式
+
+```javascript
+/*函数声明*/
+alert(dolly(1,2))
+function dolly(value1,value2){
+  return (value1+value2);
+}
+/*函数表达式*/
+alert(dolly(1,2))
+let dolly = function(value1,value2){ return (value1+value2);};
+```
+
+* 若忽略`alert(dolly(1,2))`语句，函数表达式会立即执行并将结果赋值给dolly；而函数声明只是声明了这个函数并未执行，仍需要进行调用
+* 若不忽略`alert(dolly(1,2))`语句，上面的可以执行，下面的会报错；因为代码执行之前，解析器会通过一个名为函数声明提升的过程，读取并将函数声明添加到执行环境当中
+
+#### 2. 函数的内部属性
+
+函数的内部属性有`arguments`，`this`和`callee`，`callee`是我第一次见到，它有助于消除紧密的耦合关系，将强耦合变为弱耦合，看一用递归写的阶乘的例子
+
+```javascript
+function Factorial(number){
+  if (number <= 1) return 1;
+  else return (number * Factorial(number-1));
+}
+
+let anotherFactorial = Factorial;
+Factorial = function(){
+  return 0;
+};
+```
+
+这样会使得副本`anotherFactorial`也变得不可用，因为耦合关系过强，使用`callee`指向`arguments`对象的函数：
+
+```javascript
+function Factorial(number){
+  if (number <= 1) return 1;
+  else return (number * arguments.callee(number-1));
+}
+
+let anotherFactorial = Factorial;
+Factorial = function(){
+  return 0;
+};
+```
+
+这里`arguments.callee`不能用`this`来替换，因为`this`这里指向`window`
+
+再看一个`this`的有趣例子：
+
+```javascript
+let color = "red";
+let a = new Object();
+a.color = "blue";
+
+function showColor(){
+  return this.color;
+}
+alert(showColor()); // "red" this is window
+alert(a.showColor()); // "blue" this is a
+```
+
+#### 3. 函数的属性和方法
+
+* 属性：`length`代表函数参数个数；`prototype`
+* 方法：`apply() call() bind()`
+
+## 五、 基本包装类型
+
+基本包装类型有`String  Boolean Number`三种
+
+```javascript
+let n1 = 24; //基本类型
+let n2 = new Number(24); //基本包装类型 Object的继承类型
+let n3 = Number("24"); //这里Number是转型函数,也是基本类型
+
+alert(typeof n1); "number"
+alert(typeof n2); "object"
+alert(typeof n3); "number"
+```
+
+一般不用基本包装类型，因为容易产生误会：
+
+```javascript
+a = new Boolean(false);
+b = true;
+alert(a&&b) // true
+```
+
+
+
+
+
+
+
+
+
+
+
+END.

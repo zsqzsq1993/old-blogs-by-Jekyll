@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>toDoList</title>
+    <link rel="stylesheet" href="/assets/css/base.css">
+</head>
+<body>
+    <section class="todoApp">
+        <!-- Part1 Header -->
+        <header class="header">
+            <h1>todos</h1>
+            <input type="text" class="new-todo" placeholder="您需要做些什么呢？" autofocus />
+        </header>
+        <!-- Part2 Content -->
+        <section class="main">
+            <input type="checkbox" id="toggle-all"/>
+            <label for="toggle-all">Mark all as completed</label>
+            <ul class="todo-list"></ul>
+        </section>
+        <!-- Part3 Footer -->
+        <footer class="footer">
+            <span class="todo-count">剩余 <strong class="count">0</strong> 项</span>
+            <ul class="filters">
+                <li>
+                    <a href="#" class="selected">全部任务</a>
+                </li>
+                <li>
+                    <a href="#">待完成</a>
+                </li>
+                <li>
+                    <a href="#">已完成</a>
+                </li>
+            </ul>
+            <button class="clear-complete">清空已完成任务</button>
+        </footer>
+    </section>
+    <!-- Part4 Infor -->
+    <footer class="info">
+        <p>Double click to edit todo</p>
+        <p>Created by <a href="https://zsqzsq1993.github.io">Dolly</a></p>
+        <p>Forked from <a href="http://todomvc.com/">todomvc</a></p>
+    </footer>
+    <script src="/assets/js/jquery/jquery.js"></script>
+    <script src="/assets/js/app.js"></script>
+</body>
+</html>

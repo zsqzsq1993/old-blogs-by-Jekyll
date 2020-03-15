@@ -1,0 +1,24 @@
+<!-- Header -->
+<div class="postHeader jumbotron text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8
+                        offset-lg-2
+                        col-md-10
+                        offset-lg-1">
+                <h1 class="display-4">{{page.title}}</h1>
+                <h2><small>{{page.description}}</small></h2>
+                <div class="date">
+                    Posted by {% if site.author %}{{site.author}}{% else %}{{site.title}}{% endif %} on {{page.date | date: "%B %-d, %Y"}}
+                </div>
+                <div class="tags">
+                    {% for tag in page.tags %}
+                    <a href="#" class="tag-link">{{tag}}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include nav.html %}
+</div>
