@@ -1,0 +1,126 @@
+---
+layout: post
+title: "摘要 - MDN HTML Basic"
+description: "Basic HTML forked from MDN"
+tags:
+  - Excerpt
+  - HTML
+---
+这篇摘要摘录了MDN中关于HTML有趣的**基础知识点**。
+
+## 元数据&lt;meta&gt;
+
+#### 1. 添加description的meta标签，方便搜索引擎检索
+
+<meta name="description" content="The Mozilla Developer Network (MDN) provides
+information about Open Web technologies including HTML, CSS, and APIs for both
+Web sites and HTML5 Apps. It also documents Mozilla products, like Firefox OS.">
+
+SEO - [Search Engine Optimization](https://developer.mozilla.org/zh-CN/docs/Glossary/SEO)
+
+#### 2. 添加图标等标签
+
+* 将其保存在与网站的索引页面相同的目录中，以.ico格式保存（大多数浏览器将支持更通用的格式，如.gif或.png，但使用ICO格式将确保它能在如Internet Explorer 6一样久远的浏览器显示）
+
+* 将以下行添加到HTML <head>中以引用它：
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+* 将以下行添加到HTML <head>中以引用它（兼容性更好）
+
+```html
+<!-- third-generation iPad with high-resolution Retina display: -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://developer.cdn.mozilla.net/static/img/favicon144.a6e4162070f4.png">
+<!-- iPhone with high-resolution Retina display: -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://developer.cdn.mozilla.net/static/img/favicon114.0e9fabd44f85.png">
+<!-- first- and second-generation iPad: -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://developer.cdn.mozilla.net/static/img/favicon72.8ff9d87c82a0.png">
+<!-- non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+<link rel="apple-touch-icon-precomposed" href="https://developer.cdn.mozilla.net/static/img/favicon57.a2490b9a2d76.png">
+<!-- basic favicon -->
+<link rel="shortcut icon" href="https://developer.cdn.mozilla.net/static/img/favicon32.e02854fdcf73.png">
+```
+
+## 主语言
+
+```html
+<html lang="en-US">
+```
+
+这在很多方面都很有用。如果你的HTML文档的语言设置好了，那么你的HTML文档就会被搜索引擎更有效地索引 (例如，允许它在特定于语言的结果中正确显示)，对于那些使用屏幕阅读器的视障人士也很有用(比如， 法语和英语中都有“six”这个单词，但是发音却完全不同)。
+
+## 标题
+
+- 您应该最好只对每个页面使用一次<h1> — 这是顶级标题，所有其他标题位于层次结构中的下方。
+- 请确保在层次结构中以正确的顺序使用标题。不要使用<h3>来表示副标题，后面跟<h2>来表示副副标题 - 这是没有意义的，会导致奇怪的结果。
+- 在可用的六个标题级别中，您应该旨在每页使用不超过三个，除非您认为有必要使用更多。具有许多级别的文档（即，较深的标题层次结构）变得难以操作并且难以导航。在这种情况下，如果可能，建议将内容分散在多个页面上。
+
+## &lt;span&gt;
+
+`<span>` 元素，它没有语义。当您想要对它用CSS（或者JS）时，您可以用它包裹内容，且不需要附加任何额外的意义。
+
+## 连接
+
+#### 1. URL
+
+![A simple directory structure. The parent directory is called creating-hyperlinks and contains two files called index.html and contacts.html, and two directories called projects and pdfs, which contain an index.html and a project-brief.pdf file, respectively](https://mdn.mozillademos.org/files/12409/simple-directory.png)
+
+* 指向当前目录：**如果`index.html`（目录顶层的`index.html`）想要包含一个超链接指向`contacts.html`，你只需要指定想要链接的文件名，因为它与当前文件是在同一个目录的. 所以你应该使用的URL是`contacts.html`
+
+* 指向子目录：**如果`index.html` （目录顶层`index.html`）想要包含一个超链接指向 `projects/index.html`，您需要先进入`projects/`项目目录，然后指明要链接到的文件`index.html`。 通过指定目录的名称，然后是正斜杠，然后是文件的名称。因此您要使用的URL是`projects/index.html`
+
+* 指向上级目录：** 如果你想在`projects/index.html`中包含一个指向`pdfs/project-brief.pdf`的超链接，你必须先返回上级目录，然后再回到`pdf`目录。“返回上一个目录级”使用两个英文点号表示 — `..` — 所以你应该使用的URL是 `../pdfs/project-brief.pdf`
+
+#### 2. 文档片段
+
+超链接除了可以链接到文档外，也可以链接到HTML文档的特定部分（被称为**文档片段**）。要做到这一点，你必须首先给要链接到的元素分配一个`id`属性。例如，如果你想链接到一个特定的标题，可以这样做：
+
+```html
+<h2 id="Mailing_address">Mailing address</h2>
+```
+
+然后链接到那个特定的`id`，您可以在URL的结尾使用一个井号指向它，例如：
+
+```html
+<p>Want to write us a letter? Use our <a href="contacts.html#Mailing_address">mailing address</a>.</p>
+```
+
+你甚至可以在同一份文档下，通过链接文档片段，来链接到同一份文档的另一部分：
+
+```html
+<p>The <a href="#Mailing_address">company mailing address</a> can be found at the bottom of this
+```
+
+#### 3. 下载
+
+使用download属性：
+
+```html
+<a href="https://download.mozilla.org/?product=firefox-latest-ssl&os=win64&lang=en-US"
+   download="firefox-latest-64bit-installer.exe">
+  Download Latest Firefox for Windows (64-bit) (English, US)
+</a>
+```
+
+#### 4. 邮件连接
+
+当点击一个链接或按钮时，打开一个新的电子邮件发送信息而不是连接到一个资源或页面，这种情况是可能做到的。这样做是使用[``](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/a)元素和`mailto`：URL的方案。
+其最基本和最常用的使用形式为一个`mailto`:link （链接），链接简单说明收件人的电子邮件地址。例如:
+
+```html
+<a href="mailto:nowhere@mozilla.org">Send email to nowhere</a>
+```
+
+这会创建一个链接，看起来像这样： [Send email to nowhere](mailto:nowhere@mozilla.org).
+
+实际上，邮件地址甚至是可选的。如果你忘记了（也就是说，你的`href`仅仅只是简单的"`mailto:`"），一个新的发送电子邮件的窗口也会被用户的邮件客户端打开，只是没有收件人的地址信息，这通常在“分享”链接是很有用的，用户可以发送给他们选择的地址邮件
+
+或指定cc、bcc、body等更多内容：
+
+```html
+<a href="mailto:nowhere@mozilla.org?cc=name2@rapidtables.com&bcc=name3@rapidtables.com&subject=The%20subject%20of%20the%20email&body=The%20body%20of%20the%20email">
+  Send mail with cc, bcc, subject and body
+</a>
+```
+
+.END
