@@ -1,0 +1,250 @@
+---
+layout: post
+title: "摘要 - MDN HTML Form"
+description: "Basic HTML table&form knowledge forked from MDN"
+tags:
+    - Excerpt
+    - HTML
+---
+这篇摘要摘录了MDN中关于Table以及Form有趣的基础知识点。
+Form的知识跟后端站点关系紧密，值得重点学习。
+
+## 表格
+
+#### 合并单元格
+
+* 横行合并用`colspan`属性
+* 纵向合并用`rowspan`属性
+
+* css中设置单双列样式：
+
+```css
+tr:nth-child(odd) td: {...}
+tr:nth-child(even) td: {...}
+```
+
+#### colgroup标签
+
+感觉没什么用，它可以按列来定义样式：
+
+```html
+<table>
+  <colgroup>
+  	<col> <!--第一列没定义样式-->
+    <col style="background-color: red" span="2"> <!--第二、三列红色背景-->
+    <col style="font-weight: bold"> <!--第四列字体加粗-->
+  </colgroup>
+</table>
+```
+
+#### 一个好的表格格式
+
+```html
+<h1>Title</h1>
+<table>
+  <caption>Subtitle</caption>
+  <thead>
+  	<tr>
+    	<th>Name</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tfoot>
+  	<tr>
+    	<td>Average Age</td>
+      <td>19</td>
+    </tr>
+  </tfoot>
+  <tbody>
+  	...
+  </tbody>
+</table>
+```
+
+`<tfoot>`标签虽然写在了前面，但仍会在表格的最后进行呈现。
+
+在表格中嵌套别的表格也是可行的，但是并不推荐
+
+#### 对于视力受损人群
+
+为`<thead>`标签增添scope属性，方便屏幕阅读器进行识别。
+
+如告诉屏幕阅读器这是一些列标题：
+
+```html
+<thead>
+  <tr>
+    <th scope="col">Purchase</th>
+    <th scope="col">Location</th>
+    <th scope="col">Date</th>
+    <th scope="col">Evaluation</th>
+    <th scope="col">Cost (€)</th>
+  </tr>
+</thead>
+```
+
+再如告诉屏幕阅读器这是一个行标题：
+
+```html
+<tr>
+  <th scope="row">Haircut</th>
+  <td>Hairdresser</td>
+  <td>12/09</td>
+  <td>Great idea</td>
+  <td>30</td>
+</tr>
+```
+
+有时需要使用colgroup或rowgroup属性：
+
+```html
+<tr>
+	<th colspan="2" scope="colgroup">Name</th>
+</tr>
+<tr>
+	<th scope="col">Dolly</th>
+  <th scope="col">Vera</th>
+</tr>
+```
+
+另一种方法使用id及header属性，但容错率低，不推荐
+
+```html
+<thead>
+  <tr>
+    <th id="purchase">Purchase</th>
+    <th id="location">Location</th>
+    <th id="date">Date</th>
+    <th id="evaluation">Evaluation</th>
+    <th id="cost">Cost (€)</th>
+  </tr>
+</thead>
+<tbody>
+<tr>
+  <th id="haircut">Haircut</th>
+  <td headers="location haircut">Hairdresser</td>
+  <td headers="date haircut">12/09</td>
+  <td headers="evaluation haircut">Great idea</td>
+  <td headers="cost haircut">30</td>
+</tr>
+
+  ...
+
+</tbody>
+```
+
+#### 一个好的表格示例
+
+[太阳系行星数据表格](https://roy-tian.github.io/mdn-examples/html/planets-data/)
+
+## 表单
+
+> 表单越大，失去用户的风险就越大
+
+- 杂志<Smashing Magazine>中有[很好的关于表单用户体验的文章](http://uxdesign.smashingmagazine.com/tag/forms/)，或许其中最重要的应该是他们的[Extensive Guide To Web Form Usability](http://uxdesign.smashingmagazine.com/2011/11/08/extensive-guide-web-form-usability/).
+- UXMatters 也是一个非常有思想的资源，从基本的[最佳实践](http://www.uxmatters.com/mt/archives/2012/05/7-basic-best-practices-for-buttons.php)到复杂的问题如[多页表单](https://www.uxmatters.com/mt/archives/2010/03/pagination-in-web-forms-evaluating-the-effectiveness-of-web-forms.php)，都有很好的建议
+
+#### 简单表单
+
+`<form>`标签：
+
+```html
+<form action="/my-handling-form-page" method="post">
+	...
+</form>
+```
+
+- `action` 属性定义了在提交表单时,应该把所收集的数据送给谁(/那个模块)(URL)去处理。.
+-  `method` 属性定义了发送数据的HTTP方法(它可以是“get”或“post”).
+
+```
+<form action="/my-handling-form-page" method="post">
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" id="name">
+  </div>
+  <div>
+    <label for="mail">E-mail:</label>
+    <input type="email" id="mail">
+  </div>
+  <div>
+    <label for="msg">Message:</label>
+    <textarea id="msg"></textarea>
+  </div>
+  <div class="button">
+  	<button type="submit">Send your message</button>
+	</div>
+</form>
+```
+
+注意在所有`<label>`元素上使用`for`属性；它是将标签链接到表单小部件的一种正规方式。这个属性引用对应的小部件的`id`。这样做有一些好处。最明显的一个好处是允许用户单击标签以激活相应的小部件。
+
+`<button>`标签的type属性接受三个可选值：submit, reset, button：
+
+- 单击 `type` 属性定义为 `submit` 值(也是默认值)的按钮会发送表单的数据到[``](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/form)元素的`action` 属性所定义的网页。
+- 单击 `type` 属性定义为 `reset` 值的按钮 将所有表单小部件重新设置为它们的默认值。从用户体验的角度来看，这被认为是一种糟糕的做法。
+- 单击 `type` 属性定义为 `button` 值的按钮……不会发生任何事！这听起来很傻，但是用JavaScript构建定制按钮非常有用。 
+
+**注意：**还可以使用相应类型的`<input>`元素来生成一个按钮，如`<input type="submit">``<button>`元素的主要优点是`<input>`元素只允许纯文本作为其标签，而`<button>`元素允许完整的HTML内容，允许更复杂、更有创意的按钮文本。
+
+#### `<fieldset>`和`<legend>`元素
+
+严格禁止在表单中嵌套表单。
+
+`<fieldset>`元素是一种方便的用于创建具有相同目的的小部件组的方式，出于样式和语义目的。 你可以在`<fieldset>`开口标签后加上一个`<legend>`元素来给`<fieldset>`标上标签。`<legend>`的文本内容正式地描述了`<fieldset>`里所含有部件的用途。
+
+```html
+<form>
+  <fieldset>
+    <legend>Fruit juice size</legend>
+    <p>
+      <input type="radio" name="size" id="size_1" value="small">
+      <label for="size_1">Small</label>
+    </p>
+    <p>
+      <input type="radio" name="size" id="size_2" value="medium">
+      <label for="size_2">Medium</label>
+    </p>
+    <p>
+      <input type="radio" name="size" id="size_3" value="large">
+      <label for="size_3">Large</label>
+    </p>
+  </fieldset>
+</form>
+```
+
+一般来说，`<fieldset>`元素也可以用来对表单进行分段。理想情况下，长表单应该在拆分为多个页面，但是如果表单很长，却必须在单个页面上，那么将以不同的关联关系划分的分段，分别放在不同的`<fieldset>`里，可以提高可用性。
+
+#### `<label>`元素
+
+```html
+<p>Required fields are followed by <abbr title="required">*</abbr>.</p>
+
+<!--这样写：-->
+<div>
+  <label for="username">Name:</label>
+  <input type="text" name="username">
+  <label for="username"><abbr title="required">*</abbr></label>
+</div>
+
+<!--但是这样写会更好：-->
+<div>
+  <label for="username">
+    <span>Name:</span>
+    <input id="username" type="text" name="username">
+    <abbr title="required">*</abbr>
+  </label>
+</div>
+
+<!--但最好的可能是这样：-->
+<div>
+  <label for="username">Name: <abbr title="required">*</abbr></label>
+  <input id="username" type="text" name="username">
+</div>
+```
+
+- 在第一个例子中，标签根本没有和`input`一起被念出来——读出来的只是“edit the blank”，和单独被念出的标签。多个``元素会使屏幕阅读器迷惑。
+- 在第二个例子中，事情变得清晰一点了——标签和输入一起，读出的是“name star name edit text”，但标签仍然是单独读出的。这还是有点令人困惑，但这次还是稍微好一点了，因为`input`和`label`联系起来了。
+- 第三个例子是最好的——标签是一起读出的，标签和输入读出的是“name star edit text”。
+
+Continue...
