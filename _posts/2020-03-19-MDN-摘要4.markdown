@@ -1,0 +1,107 @@
+---
+layout: post
+title: "摘要 - MDN HTML Client-side validation"
+description: "Before submitting data to the server, it is important to ensure all required form controls are filled out, in the correct format."
+tags:
+    - Excerpt
+    - HTML
+---
+The client-side form validation is to ensure all required form controls are filled out in the correct format. This excerpt records basic client-side form validation knowledge forked from MDN.
+
+## Basis
+
+Your app should not only rely on **client-side**  validation because it is too easy to turn off. You shold also design **serve-side** validation Here are some examples:
+
+- "This field is required" (You can't leave this field blank).
+- "Please enter your phone number in the format xxx-xxxx" (A specific data format is required for it to be considered valid).
+- "Please enter a valid email address" (the data you entered is not in the right format).
+- "Your password needs to be between 8 and 30 characters long and contain one uppercase letter, one symbol, and a number." (A very specific data format is required for your data).
+
+## Types
+
+There are two types of client-side validation:
+
+* **Built-in form validation** uses HTML5 validation features.
+* **JavaScript**
+
+## Built-in form validation
+
+Let's recap:
+
+* required: Specifies whether a form field needs to be filled in before the form can be submitted.
+* minlength&maxlength: Specifies the minimum and maximum length of textual data (strings)
+* min&max: Specifies the minimum and maximum values of numerical input types
+* type: Specifies whether the data needs to be a number, an email address, or some other specific preset type. 
+* pattern: Specifies a regular expression that defines a pattern the entered data needs to follow. 
+
+
+
+When an element is valid, the following things are true:
+
+- The element matches the [`:valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:valid) CSS pseudo-class, which lets you apply a specific style to valid elements.
+- If the user tries to send the data, the browser will submit the form, provided there is nothing else stopping it from doing so (e.g., JavaScript).
+
+
+
+When an element is invalid, the following things are true:
+
+- The element matches the [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) CSS pseudo-class, and sometimes other UI pseudo-classes (e.g., [`:out-of-range`](https://developer.mozilla.org/en-US/docs/Web/CSS/:out-of-range)) depending on the error, which lets you apply a specific style to invalid elements.
+- If the user tries to send the data, the browser will block the form and display an error message.
+
+```css
+input:invalid {
+  border: 2px dashed red;
+}
+
+input:invalid:required {
+  background-image: linear-gradient(to right, pink, lightgreen);
+}
+
+input:valid {
+  border: 2px solid black;
+}
+```
+
+Above example makes input blank have 2px dashed red border with linear-gradient background when it is empty.
+
+## Paterns
+
+```html
+<form>
+  <label for="choose">Would you prefer a banana or a cherry?</label>
+  <input id="choose" name="i_like" required pattern="[Bb]anana|[Cc]herry">
+  <button>Submit</button>
+</form>
+```
+
+About example uses patterns.
+
+**Note**: The element `<textarea>` doesn't support the pattern attribute.
+
+## Constraining the values of your entries
+
+```html
+<form>
+  <div>
+    <label for="choose">Would you prefer a banana or a cherry?</label>
+    <input type="text" id="choose" name="i_like" required minlength="6" maxlength="6">
+  </div>
+  <div>
+    <label for="number">How many would you like?</label>
+    <input type="number" id="number" name="amount" value="1" min="1" max="10">
+  </div>
+  <div>
+    <button>Submit</button>
+  </div>
+</form>
+```
+
+![1](/images/2020-03-19/1.png)
+
+**Note**:`<input type="number">` (and other types, such as `range` and `date`) can also take a step attribute, which specifies what increment the value will go up or down by when the input controls are used (such as the up and down number buttons). In the above example we've not included a step attribute, so the value defaults to 1. This means that floats, like 3.2, will also show as invalid.
+
+## Validating by JavaScript
+
+#### The constraint validation API
+
+Sorry, I'm tired today...

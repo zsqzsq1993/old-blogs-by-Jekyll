@@ -247,4 +247,31 @@ tr:nth-child(even) td: {...}
 - 在第二个例子中，事情变得清晰一点了——标签和输入一起，读出的是“name star name edit text”，但标签仍然是单独读出的。这还是有点令人困惑，但这次还是稍微好一点了，因为`input`和`label`联系起来了。
 - 第三个例子是最好的——标签是一起读出的，标签和输入读出的是“name star edit text”。
 
-Continue...
+## 表单中的小元件
+
+已看完，待补充进来。。。
+
+## 服务器端简介
+
+#### GET
+
+HTTP请求如下：
+
+```html
+GET /?say=Hi&to=Mom HTTP/2.0
+Host: foo.com
+```
+
+#### POST
+
+当使用`POST`方法提交表单时，没有数据会附加到URL，HTTP请求看起来是这样的，而请求主体中包含的数据是这样的：
+
+```html
+POST / HTTP/2.0
+Host: foo.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 13
+
+say=Hi&to=Mom
+```
+
