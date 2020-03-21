@@ -1,0 +1,489 @@
+---
+layout: post
+title: "摘要 - MDN HTML CSS Basis"
+description: "Basic CSS knowledge forked from MDN"
+tags:
+    - Excerpt
+    - CSS
+---
+I don't think CSS(Cascading Style Sheets) is a programming language. However, I am still willing to learn it with the enthusiasm of learning a language.
+
+## CSS 简介
+
+#### 级联规则&专用规则
+
+```html
+<p class="special">What color am I?</p>
+```
+
+1 -&gt; 段落是红色的，一个类被描述为比元素选择器更具体，或者具有更多的特异性
+
+```css
+.special {
+  color: red;
+}
+p {
+  color: blue;
+}
+```
+
+2 -&gt; 段落是蓝色的，因为第二个样式覆盖了第一个样式
+
+```css
+p {
+  color: red;
+}
+p {
+  color: blue;
+}
+```
+
+> 在CSS(和其他网络标准)中，当语言表达存在不确定性时，美国的拼写被视作公认的标准。例如，颜色应该始终拼写为color。colour是不起作用的。
+
+#### 函数
+
+CSS可以应用一些简单的函数，如`calc()`
+
+```css
+.box {
+  padding: 10px;
+  width: calc(90% - 30px);
+  background-color: rebeccapurple;
+  color: white;
+}
+```
+
+另一个例子是[`<transform>`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/transform), 例如 `rotate()`:
+
+```css
+.box {
+  margin: 30px;
+  width: 100px;
+  height: 100px;
+  background-color: rebeccapurple;
+  transform: rotate(0.8turn)
+}
+```
+
+#### @规则
+
+如导入其他的样式表到主样式表。
+
+```css
+@import 'styles2.css';
+```
+
+如媒体查询，如果浏览器的宽度大于30em，则背景色将为蓝色。
+
+```css
+body {
+  background-color: pink;
+}
+
+@media (min-width: 30em) {
+  body {
+    background-color: blue;
+  }
+}
+```
+
+#### 速记属性
+
+一些属性，如 [`font`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/font), [`background`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background), [`padding`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/padding), [`border`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border), and [`margin`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/margin) 等属性称为速记属性--这是因为它们允许您在一行中设置多个属性值，从而节省时间并使代码更整洁。
+
+#### 注释
+
+```css
+/* Handle basic element styling */
+/* ---------------------------------------*/
+```
+
+## CSS工作原理
+
+1. 浏览器载入HTML文件（比如从网络上获取）。
+2. 将HTML文件转化成一个DOM（Document Object Model），DOM是文件在计算机内存中的表现形式，下一节将更加详细的解释DOM。
+3. 接下来，浏览器会拉取该HTML相关的大部分资源，比如嵌入到页面的图片、视频和CSS样式。JavaScript则会稍后进行处理，简单起见，同时此节主讲CSS，所以这里对如何加载JavaScript不会展开叙述。
+4. 浏览器拉取到CSS之后会进行解析，根据选择器的不同类型（比如element、class、id等等）把他们分到不同的“桶”中。浏览器基于它找到的不同的选择器，将不同的规则（基于选择器的规则，如元素选择器、类选择器、id选择器等）应用在对应的DOM的节点中，并添加节点依赖的样式（这个中间步骤称为渲染树）。
+5. 上述的规则应用于渲染树之后，渲染树会依照应该出现的结构进行布局。
+6. 网页展示在屏幕上（这一步被称为着色）。
+
+![img](https://mdn.mozillademos.org/files/11781/rendering.svg)
+
+```css
+.box {
+  width: 500px;
+  width: calc(100% - 50px);
+}
+```
+
+老式的浏览器由于无法解析忽略这一行；新式的浏览器则会把这一行解析成像素值，并且覆盖第一行指定的宽度。
+
+## 层叠与继承
+
+#### 继承的3个值：
+
+[`inherit`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/inherit)
+
+设置该属性会使子元素属性和父元素相同。实际上，就是 "开启继承".
+
+[`initial`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/initial)
+
+设置属性值和浏览器默认样式相同。如果浏览器默认样式中未设置且该属性是自然继承的，那么会设置为 `inherit` 。
+
+[`unset`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/unset)
+
+将属性重置为自然值，也就是如果属性是自然继承那么就是 `inherit`，否则和 `initial`一样
+
+<ul>
+    <li>Default <a href="#">link</a> color</li> <!-- blue -->
+    <li class="my-class-1">Inherit the <a href="#">link</a> color</li> <!--green-->
+    <li class="my-class-2">Reset the <a href="#">link</a> color</li><!--black-->
+    <li class="my-class-3">Unset the <a href="#">link</a> color</li><!--green-->
+</ul>
+
+```css
+body {
+    color: green;
+}
+          
+.my-class-1 a {
+    color: inherit;
+}
+          
+.my-class-2 a {
+    color: initial;
+}
+          
+.my-class-3 a {
+    color: unset;
+}
+```
+
+#### 重设所有属性
+
+上面的blockquote会被设置为背景为红色有着绿色边框的样式；而下面的blockquote则会恢复默认状态。
+
+```css
+blockquote {
+    background-color: red;
+    border: 2px solid green;
+}
+        
+.fix-this {
+    all: unset;
+}
+```
+
+```html
+<blockquote>
+  <p>This blockquote is styled</p>
+</blockquote>
+
+<blockquote class="fix-this">
+  <p>This blockquote is not styled</p>
+</blockquote>
+```
+
+#### 选择器的权重
+
+一个选择器的优先级可以说是由四个部分相加 (分量)，可以认为是**个十百千**  四位数的四个位数：
+
+1. **千位**： 如果声明在 `style` 的属性（内联样式）则该位得一分。这样的声明没有选择器，所以它得分总是1000。
+2. **百位**： 选择器中包含ID选择器则该位得一分。
+3. **十位**： 选择器中包含类选择器、属性选择器或者伪类则该位得一分。
+4. **个位**：选择器中包含元素、伪元素选择器则该位得一分。
+
+> ⚠️注意：通用选择器 (`*`)，组合符 (`+`, `>`, `~`, ' ')，和否定伪类 (`:not`) 不会影响优先级。
+>
+> ⚠️警告：在进行计算时不允许进行进位，例如，20 个类选择器仅仅意味着 20 个十位，而不能视为 两个百位，也就是说，无论多少个类选择器的权重叠加，都不会超过一个 ID 选择器。
+
+有一个特殊的 CSS 可以用来覆盖所有上面所有优先级计算，不过需要很小心的使用 — `!important`。用于修改特定属性的值， 能够覆盖普通规则的层叠。
+
+比如：
+
+```css
+div{
+	border: none !important
+}
+```
+
+> ⚠️注意： 覆盖 `!important` 唯一的办法就是另一个 `!important` 具有 相同*优先级* 而且顺序靠后，或者更高优先级。**强烈建议除了非常情况不要使用它。** 
+
+## Selector
+
+#### Combination
+
+When combined however, neither the `h1` nor the class will be styled as the entire rule is deemed invalid.
+
+```css
+h1, ..special { 
+  color: blue; 
+}
+```
+
+#### Child combinator
+
+The final group of selectors combine other selectors in order to target elements within our documents. The following for example selects paragraphs that are direct children of `<article>` elements using the child combinator (>).
+
+```css
+article > p { }
+```
+
+#### first-child
+
+* `article:first-child`: will select any `<article>` element that is the first child of another element.
+* `article: first-child`: will select the first child of any  `<article>`  element.
+* `article *:first-child`: same with `article: first-child`
+
+#### More than one class
+
+```css
+.notebox.warning {
+    border: 4px solid orange;
+    font-weight: bold;
+}
+```
+
+> **Note**: As we learned in the lesson on specificity, an ID has high specificity and will overrule most other selectors. This can make them difficult to deal with. In most cases it is preferable to add a class to the element rather than use an ID, however if using the ID is the only way to target the element — perhaps because you do not have access to the markup and so cannot edit it — this will work.
+
+#### Attribute Selector
+
+| Selector            | Example                         | Description                                                  |
+| :------------------ | :------------------------------ | :----------------------------------------------------------- |
+| `[*attr*]`          | `a[title]`                      | Matches elements with an attribute name of *attr* — the value in square brackets. |
+| `[*attr*=*value*]`  | `a[href="https://example.com"]` | Matches elements with an attribute name of *attr* whose value is exactly *value* — the string inside the quotes. |
+| `[*attr*~=*value*]` | `p[class~="special"]`           | Matches elements with an attribute name of *attr* whose value is exactly *value*, or elements with an *attr* attribute containing one or more values, at least one of which matches *value*.Note that in a list of multiple values the separate values are whitespace-separated. |
+| `[*attr*|=*value*]` | `div[lang|="zh"]`               | Matches elements with an attribute name of *attr* whose value can be exactly *value* or can begin with *value* immediately followed by a hyphen( - ). |
+| `[*attr*^=*value*]` | `li[class^="box-"]`             | Matches elements with an attribute name of *attr* whose value has the substring *value* at the start of it. |
+| `[*attr*$=*value*]` | `li[class$="-box"]`             | Matches elements with an attribute name of *attr* whose value has the substring *value* at the end of it. |
+| `[*attr**=*value*]` | `li[class*="box"]`              | Matches elements with an attribute name of *attr* whose value contains at least one occurrence of the substring *value* anywhere within the string. |
+
+```css
+/*This will be case insensitive*/
+li[class^="a" i] { 
+    color: red;
+}
+```
+
+#### Pseudo-classes & Peseudo elements
+
+**Pseudo-classes**
+
+* `:first-child`
+* `:last-child`
+* `:only-child`
+* `:invalid`
+* `:hover`
+* `:focus`
+
+**Pseudo-elements**
+
+Pseudo-elements behave in a similar way, however they act as if you had added a whole new HTML element into the markup, rather than applying a class to existing elements. Pseudo-elements start with a double colon `::`.
+
+> **Note**: Some early pseudo-elements used the single colon syntax, so you may sometimes see this in code or examples. Modern browsers support the early pseudo-elements with single- or double-colon syntax for backwards compatibility.
+
+For example, if you wanted to select the first line of a paragraph you could wrap it in a `<span>` element and use an element selector; however, that would fail if the number of words you had wrapped were longer or shorter than the parent element's width. As we tend not to know how many words will fit on a line — as that will change if the screen width or font-size changes — it is impossible to robustly do this by adding HTML. 如果`<span>`中内容增加，会导致其进入第二行。
+
+```css
+article p::first-line {
+    font-size: 120%;
+    font-weight: bold;
+}  
+```
+
+**Combination**
+
+```css
+article p:first-child::first-line { 
+  font-size: 120%; 
+  font-weight: bold; 
+}
+```
+
+**before & after**
+
+```css
+.box::before {
+    content: "This should show before the other content."
+}   
+```
+
+A more valid use of these pseudo-elements is to insert an icon, for example the little arrow added in the example below, which is a visual indicator that we wouldn't want read out by a screenreader:
+
+```css
+.box::after {
+    content: " ➥"
+}   
+```
+
+**Reference**
+
+| Selector                                                     | Description                                                  |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| [`:active`](https://developer.mozilla.org/en-US/docs/Web/CSS/:active) | Matches when the user activates (for example clicks on) an element. |
+| [`:any-link`](https://developer.mozilla.org/en-US/docs/Web/CSS/:any-link) | Matches both the `:link` and `:visited` states of a link.    |
+| [`:blank`](https://developer.mozilla.org/en-US/docs/Web/CSS/:blank) | Matches an [`` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input) whose input value is empty. |
+| [`:checked`](https://developer.mozilla.org/en-US/docs/Web/CSS/:checked) | Matches a radio button or checkbox in the selected state.    |
+| `:current`                                                   | Matches the element, or an ancestor of the element, that is currently being displayed. |
+| [`:default`](https://developer.mozilla.org/en-US/docs/Web/CSS/:default) | Matches the one or more UI elements that are the default among a set of similar elements. |
+| [`:dir`](https://developer.mozilla.org/en-US/docs/Web/CSS/:dir) | Select an element based on its directionality (value of the HTML `dir` attribute or CSS `direction` property). |
+| [`:disabled`](https://developer.mozilla.org/en-US/docs/Web/CSS/:disabled) | Matches user interface elements that are in an disabled state. |
+| [`:empty`](https://developer.mozilla.org/en-US/docs/Web/CSS/:empty) | Matches an element that has no children except optionally white space. |
+| [`:enabled`](https://developer.mozilla.org/en-US/docs/Web/CSS/:enabled) | Matches user interface elements that are in an enabled state. |
+| [`:first`](https://developer.mozilla.org/en-US/docs/Web/CSS/:first) | In [Paged Media](https://developer.mozilla.org/en-US/docs/Web/CSS/Paged_Media), matches the first page. |
+| [`:first-child`](https://developer.mozilla.org/en-US/docs/Web/CSS/:first-child) | Matches an element that is first among its siblings.         |
+| [`:first-of-type`](https://developer.mozilla.org/en-US/docs/Web/CSS/:first-of-type) | Matches an element which is first of a certain type among its siblings. |
+| [`:focus`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus) | Matches when an element has focus.                           |
+| [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) | Matches when an element has focus and the focus should be visible to the user. |
+| [`:focus-within`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-within) | Matches an element with focus plus an element with a descendent that has focus. |
+| `:future`                                                    | Matches the elements after the current element.              |
+| [`:hover`](https://developer.mozilla.org/en-US/docs/Web/CSS/:hover) | Matches when the user hovers over an element.                |
+| [`:indeterminate`](https://developer.mozilla.org/en-US/docs/Web/CSS/:indeterminate) | Matches UI elements whose value is in an indeterminate state, usually [checkboxes](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox). |
+| [`:in-range`](https://developer.mozilla.org/en-US/docs/Web/CSS/:in-range) | Matches an element with a range when its value is in-range.  |
+| [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) | Matches an element, such as an ``, in an invalid state.      |
+| [`:lang`](https://developer.mozilla.org/en-US/docs/Web/CSS/:lang) | Matches an element based on language (value of the HTML [lang](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang) attribute). |
+| [`:last-child`](https://developer.mozilla.org/en-US/docs/Web/CSS/:last-child) | Matches an element which is last among its siblings.         |
+| [`:last-of-type`](https://developer.mozilla.org/en-US/docs/Web/CSS/:last-of-type) | Matches an element of a certain type that is last among its siblings. |
+| [`:left`](https://developer.mozilla.org/en-US/docs/Web/CSS/:left) | In [Paged Media](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Pages), matches left-hand pages. |
+| [`:link`](https://developer.mozilla.org/en-US/docs/Web/CSS/:link) | Matches unvisited links.                                     |
+| `:local-link`                                                | Matches links pointing to pages that are in the same site as the current document. |
+| [`:is()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:is) | Matches any of the selectors in the selector list that is passed in. |
+| [`:not`](https://developer.mozilla.org/en-US/docs/Web/CSS/:not) | Matches things not matched by selectors that are passed in as a value to this selector. |
+| [`:nth-child`](https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-child) | Matches elements from a list of siblings — the siblings are matched by a formula of the form an+b (e.g. 2n + 1 would match elements 1, 3, 5, 7, etc. All the odd ones.) |
+| [`:nth-of-type`](https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-of-type) | Matches elements from a list of siblings that are of a certain type (e.g. `` elements) — the siblings are matched by a formula of the form an+b (e.g. 2n + 1 would match that type of element, numbers 1, 3, 5, 7, etc. All the odd ones.) |
+| [`:nth-last-child`](https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-last-child) | Matches elements from a list of siblings, counting backwards from the end. The siblings are matched by a formula of the form an+b (e.g. 2n + 1 would match the last element in the sequence, then two elements before that, then two elements before that, etc. All the odd ones, counting from the end.) |
+| [`:nth-last-of-type`](https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-last-of-type) | Matches elements from a list of siblings that are of a certain type (e.g. `` elements), counting backwards from the end. The siblings are matched by a formula of the form an+b (e.g. 2n + 1 would match the last element of that type in the sequence, then two elements before that, then two elements before that, etc. All the odd ones, counting from the end.) |
+| [`:only-child`](https://developer.mozilla.org/en-US/docs/Web/CSS/:only-child) | Matches an element that has no siblings.                     |
+| [`:only-of-type`](https://developer.mozilla.org/en-US/docs/Web/CSS/:only-of-type) | Matches an element that is the only one of its type among its siblings. |
+| [`:optional`](https://developer.mozilla.org/en-US/docs/Web/CSS/:optional) | Matches form elements that are not required.                 |
+| [`:out-of-range`](https://developer.mozilla.org/en-US/docs/Web/CSS/:out-of-range) | Matches an element with a range when its value is out of range. |
+| `:past`                                                      | Matches the elements before the current element.             |
+| [`:placeholder-shown`](https://developer.mozilla.org/en-US/docs/Web/CSS/:placeholder-shown) | Matches an input element that is showing placeholder text.   |
+| `:playing`                                                   | Matches an element representing an audio, video, or similar resource that is capable of being “played” or “paused”, when that element is “playing”. |
+| `:paused`                                                    | Matches an element representing an audio, video, or similar resource that is capable of being “played” or “paused”, when that element is “paused”. |
+| [`:read-only`](https://developer.mozilla.org/en-US/docs/Web/CSS/:read-only) | Matches an element if it is not user-alterable.              |
+| [`:read-write`](https://developer.mozilla.org/en-US/docs/Web/CSS/:read-write) | Matches an element if it is user-alterable.                  |
+| [`:required`](https://developer.mozilla.org/en-US/docs/Web/CSS/:required) | Matches form elements that are required.                     |
+| [`:right`](https://developer.mozilla.org/en-US/docs/Web/CSS/:right) | In [Paged Media](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Pages), matches right-hand pages. |
+| [`:root`](https://developer.mozilla.org/en-US/docs/Web/CSS/:root) | Matches an element that is the root of the document.         |
+| [`:scope`](https://developer.mozilla.org/en-US/docs/Web/CSS/:scope) | Matches any element that is a scope element.                 |
+| [`:valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:valid) | Matches an element such as an `` element, in a valid state.  |
+| [`:target`](https://developer.mozilla.org/en-US/docs/Web/CSS/:target) | Matches an element if it is the target of the current URL (i.e. if it has an ID matching the current [URL fragment](https://en.wikipedia.org/wiki/Fragment_identifier)). |
+| [`:visited`](https://developer.mozilla.org/en-US/docs/Web/CSS/:visited) | Matches visited links.                                       |
+
+| Selector                                                     | Description                                                  |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| [`::after`](https://developer.mozilla.org/en-US/docs/Web/CSS/::after) | Matches a stylable element appearing after the originating element's actual content. |
+| [`::before`](https://developer.mozilla.org/en-US/docs/Web/CSS/::before) | Matches a stylable element appearing before the originating element's actual content. |
+| [`::first-letter`](https://developer.mozilla.org/en-US/docs/Web/CSS/::first-letter) | Matches the first letter of the element.                     |
+| [`::first-line`](https://developer.mozilla.org/en-US/docs/Web/CSS/::first-line) | Matches the first line of the containing element.            |
+| [`::grammar-error`](https://developer.mozilla.org/en-US/docs/Web/CSS/::grammar-error) | Matches a portion of the document containing a grammar error as flagged by the browser. |
+| [`::selection`](https://developer.mozilla.org/en-US/docs/Web/CSS/::selection) | Matches the portion of the document that has been selected.  |
+| [`::spelling-error`](https://developer.mozilla.org/en-US/docs/Web/CSS/::spelling-error) | Matches a portion of the document containing a spelling error as flagged by the browser. |
+
+#### Other selectors
+
+**General sibiling**
+
+If you want to select siblings of an element even if they are not directly adjacent, then you can use the general sibling combinator (`~`). To select all `` elements that come *anywhere* after `` elements, we'd do this:
+
+```html
+<article>
+    <h1>A heading</h1>
+    <p>I am a paragraph.</p> <!-- yes -->
+    <div>I am a div</div>
+    <p>I am another paragraph.</p> <!-- yes -->
+</article>
+```
+
+`h1 ~p{}` will select all `<p>` that has the same parent.
+
+## Box Model 盒模型
+
+#### 块级盒子 & 内联盒子 (Block Box & Inline Box)
+
+一个被定义成块级的（block）盒子会表现出以下行为:
+
+- 盒子会在内联的方向上扩展并占据父容器在该方向上的所有可用空间，在绝大数情况下意味着盒子会和父容器一样宽
+- 每个盒子都会换行
+- [`width`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/width) 和 [`height`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/height) 属性可以发挥作用
+- 内边距（padding）, 外边距（margin） 和 边框（border） 会将其他元素从当前盒子周围“推开”
+
+
+
+如果一个盒子对外显示为 `inline`，那么他的行为如下:
+
+- 盒子不会产生换行。
+-  [`width`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/width) 和 [`height`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/height) 属性将不起作用。
+- 内边距、外边距以及边框会被应用但是不会把其他处于 `inline` 状态的盒子推开。
+
+#### 内部与外部显示类型
+
+同样盒模型还有内部显示类型，它决定了盒子内部元素是如何布局的。默认情况下是按照 **[正常文档流](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Normal_Flow)** 布局，也意味着它们和其他块元素以及内联元素一样(如上所述).
+
+但是，我们可以通过使用类似 `flex` 的 `display` 属性值来更改内部显示类型。 如果设置 `display: flex`，在一个元素上，外部显示类型是 `block`，但是内部显示类型修改为 `flex`。 该盒子的所有直接子元素都会成为flex元素，会根据 [弹性盒子（Flexbox](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox) [）](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox)规则进行布局。
+
+> More information in [Block and Inline Layout](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flow_Layout/Block_and_Inline_Layout_in_Normal_Flow).
+
+#### 不同类型显示的例子
+
+Case 1:
+
+让我们继续看看别的例子。下面三个html元素，都有一个外部显示类型 `block`。第一个是一个段落，在 CSS 中加了边框。浏览器把它渲染成一个块级盒子，所以段落从新的一行开始，而且宽度占满一行。
+
+第二个是一个列表，布局属性是 `display: flex`。 将在容器中建立一个flex布局，但是每个列表是一个块级元素 —— 像段落一样 —— 会充满整个容器的宽度并且换行。
+
+下面有个块级段落，里面有两个 `<span>`元素。正常情况下是 `inline`，但是其中一个加了block类，设置属性 `display: block`。
+
+![1](/images/2020-03-21/1.png)
+
+```css
+p, 
+ul {
+  border: 2px solid rebeccapurple;
+  padding: .5em;
+}
+.block,
+li {
+  border: 2px solid blue;
+  padding: .5em;
+}
+ul {
+  display: flex; /*也就是外部类型变为block，内部变为flex？？同时设置了俩？？*/
+  list-style: none;
+}
+.block {
+  display: block;
+}      
+  
+```
+
+Case 2:
+
+我们可以看到 `inline` 元素在下面例子中的表现。 `` 在第一段默认是内联元素所以不换行。
+
+还有一个 `` 设置为 `display: inline-flex`，使得在一些flex元素外创建一个内联框。
+
+最后设置两个段落为 `display: inline`。  inline flex 容器和段落在一行上而不是像块级元素一样换行。
+
+![2](/images/2020-03-21/2.png)
+
+```css
+p, 
+ul {
+  border: 2px solid rebeccapurple;
+}
+span,
+li {
+  border: 2px solid blue;
+}
+ul {
+  display: inline-flex; /* 注意不存在block-flex */
+  list-style: none;
+  padding: 0;
+} 
+.inline {
+  display: inline;
+}
+```
+

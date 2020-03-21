@@ -19,3 +19,9 @@ title: 建站记录
 
 #### 2020-3-17: Add Release
 * 添加建站记录
+
+#### 2020-3-20: 更换域名
+* 腾讯云购买域名
+* 已CNAME记录进行域名解析
+* Customer domain in Github
+* Enforce HTTPS

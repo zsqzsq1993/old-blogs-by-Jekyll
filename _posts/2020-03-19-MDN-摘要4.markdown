@@ -104,4 +104,111 @@ About example uses patterns.
 
 #### The constraint validation API
 
-Sorry, I'm tired today...
+By using these API, we can custom validation messages.
+
+```html
+<form>
+  <label for="mail">I would like you to provide me with an e-mail address:</label>
+  <input type="email" id="mail" name="mail">
+  <button>Submit</button>
+</form>
+```
+
+```js
+const email = document.getElementById("mail");
+
+email.addEventListener("input", function (event) { //input event occurs when press enter
+  if (email.validity.typeMismatch) { 
+    email.setCustomValidity("I am expecting an e-mail address!");
+  } else {
+    email.setCustomValidity("");
+  }
+});
+```
+
+The Constraint validation API makes the following properties available on the above elements.
+
+- `validationMessage`: Returns a localized message describing the validation constraints that the control doesn't satisfy (if any). If the control is not a candidate for constraint validation (`willValidate` is `false`) or the element's value satisfies its constraints (is valid), this will return an empty string.
+- `validity`: Returns a `validityState` object that contains several properties describing the validity state of the element. You can find full details of all the available properties in the`ValidityState`reference page; below is listed a few of the more common ones:
+  - [`patternMismatch`](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/patternMismatch): Returns `true` if the value does not match the specified `pattern`, and `false` if it does match. If true, the element matches the [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) CSS pseudo-class.
+  - [`tooLong`](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/tooLong): Returns `true` if the value is longer than the maximum length specified by the `maxlength` attribute, or `false` if it is shorter than or equal to the maximum. If true, the element matches the [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) CSS pseudo-class.
+  - [`tooShort`](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/tooShort): Returns `true` if the value is shorter than the minimum length specified by the `minlength` attribute, or `false` if it is greater than or equal to the minimum. If true, the element matches the [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) CSS pseudo-class.
+  - [`rangeOverflow`](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/rangeOverflow): Returns `true` if the value is greater than the maximum specified by the `max` attribute, or `false` if it is less than or equal to the maximum. If true, the element matches the [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) and [`:out-of-range`](https://developer.mozilla.org/en-US/docs/Web/CSS/:out-of-range) CSS pseudo-classes.
+  - [`rangeUnderflow`](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/rangeUnderflow): Returns `true` if the value is less than the minimum specified by the `min` attribute, or `false` if it is greater than or equal to the minimum. If true, the element matches the [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) and [`:out-of-range`](https://developer.mozilla.org/en-US/docs/Web/CSS/:out-of-range) CSS pseudo-classes.
+  - [`typeMismatch`](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState/typeMismatch): Returns `true` if the value is not in the required syntax (when `type` is `email` or `url`), or `false` if the syntax is correct. If `true`, the element matches the [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) CSS pseudo-class.
+  - `valid`: Returns `true` if the element meets all its validation constraints, and is therefore considered to be valid, or `false` if it fails any constraint. If true, the element matches the [`:valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:valid) CSS pseudo-class; the [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) CSS pseudo-class otherwise.
+  - `valueMissing`: Returns `true` if the element has a `required` attribute, but no value, or `false` otherwise. If true, the element matches the [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) CSS pseudo-class.
+- `willValidate`: Returns `true` if the element will be validated when the form is submitted; `false` otherwise.
+
+The Constraint Validation API also makes the following methods available on the above elements.
+
+- `checkValidity()`: Returns `true` if the element's value has no validity problems; `false` otherwise. If the element is invalid, this method also fires an [`invalid` event](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/invalid_event) on the element.
+- `setCustomValidity(*message*)`: Adds a custom error message to the element; if you set a custom error message, the element is considered to be invalid, and the specified error is displayed. This lets you use JavaScript code to establish a validation failure other than those offered by the standard HTML5 validation constraints. The message is shown to the user when reporting the problem.
+
+```html
+<form novalidate>
+  <p>
+    <label for="mail">
+      <span>Please enter an email address:</span>
+      <input type="email" id="mail" name="mail" required minlength="8">
+      <span class="error" aria-live="polite"></span>
+    </label>
+  </p>
+  <button>Submit</button>
+</form>
+```
+
+```js
+// There are many ways to pick a DOM node; here we get the form itself and the email
+// input box, as well as the span element into which we will place the error message.
+const form  = document.getElementsByTagName('form')[0];
+
+const email = document.getElementById('mail');
+const emailError = document.querySelector('#mail + span.error');
+
+email.addEventListener('input', function (event) {
+  // Each time the user types something, we check if the
+  // form fields are valid.
+
+  if (email.validity.valid) {
+    // In case there is an error message visible, if the field
+    // is valid, we remove the error message.
+    emailError.innerHTML = ''; // Reset the content of the message
+    emailError.className = 'error'; // Reset the visual state of the message
+  } else {
+    // If there is still an error, show the correct error
+    showError();
+  }
+});
+
+form.addEventListener('submit', function (event) {
+  // if the email field is valid, we let the form submit
+
+  if(!email.validity.valid) {
+    // If it isn't, we display an appropriate error message
+    showError();
+    // Then we prevent the form from being sent by canceling the event
+    event.preventDefault();
+  }
+});
+
+function showError() {
+  if(email.validity.valueMissing) {
+    // If the field is empty
+    // display the following error message.
+    emailError.textContent = 'You need to enter an e-mail address.';
+  } else if(email.validity.typeMismatch) {
+    // If the field doesn't contain an email address
+    // display the following error message.
+    emailError.textContent = 'Entered value needs to be an e-mail address.';
+  } else if(email.validity.tooShort) {
+    // If the data is too short
+    // display the following error message.
+    emailError.textContent = `Email should be at least ${ email.minLength } characters; you entered ${ email.value.length }.`;
+  }
+
+  // Set the styling appropriately
+  emailError.className = 'error active';
+}
+```
+
