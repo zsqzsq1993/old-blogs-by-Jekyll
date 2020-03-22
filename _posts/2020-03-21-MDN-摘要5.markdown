@@ -486,4 +486,357 @@ ul {
   display: inline;
 }
 ```
+#### 标准盒模型 & 替代盒模型
 
+盒模型由 Content box, Padding box, Border box 和 Margin box 组成。
+
+标准盒模型的`width` 和 `height` 针对的是content box；
+
+替代盒模型的`width` 和 `height` 针对的是content box + padding box + border box；
+
+浏览器默认情况使用的是标准盒模型，可以通过 `box-sizing: border-box`来转换为替代盒模型，如果想要所有元素均使用替代盒模型可以：
+
+```css
+html{
+	box-sizing: border-box;
+}
+*,
+*::before,
+*::after{
+  box-sizing: inherit;
+}
+```
+
+#### 小知识
+
+1. margin 可以为负数，但padding不能。
+
+2. 使用`display: inline-block` 可以达到介于 `inline` 与 `block` 的中间效果，即：
+
+- 设置`width` 和`height` 属性会生效。
+- `padding`, `margin`, 以及`border` 会推开其他元素。
+
+想要通过添加内边距使链接具有更大的命中区域时，这是很有用的。
+
+## 背景与边框
+
+#### 调整背景图像的大小
+
+可以使用 `background-size` 来调整背景图像的大小。
+
+* cover：浏览器将使图像足够大，使它完全覆盖了盒子区，同时仍然保持其高宽比。在这种情况下，有些图像可能会跳出盒子外；
+* contain：浏览器将使图像的大小适合盒子内。在这种情况下，如果图像的长宽比与盒子的长宽比不同，则可能在图像的任何一边或顶部和底部出现间隙。
+
+#### 背景图像的位置
+
+将从顶部调整20px，从右侧调整10px。
+
+```css
+.box { 
+  background-image: url(star.png); 
+  background-repeat: no-repeat; 
+  background-position: top 20px right 10px; 
+} 
+```
+
+background-position是background-position-x和background-position-y的缩写。
+
+#### 渐变与多背景图像
+
+[cssgradient](https://cssgradient.io/)提供了在线生成渐变背景的代码。
+
+也可以有多个背景图像—在单个属性值中指定多个`background-image`值，用逗号分隔每个值。当你这样做时，你可能会以背景图像互相重叠而告终。背景将与最后列出的背景图像层在堆栈的底部，而之前的每个图像层在代码中紧随其后的图像的顶部。
+
+> **注意：**渐变可以与常规的背景图像很好地混合在一起。
+
+```css
+background-image: url(image1.png), url(image2.png), url(image3.png), url(image1.png);
+background-repeat: no-repeat, repeat-x, repeat;
+background-position: 10px 20px,  top right;
+```
+
+不同属性的每个值将与其他属性中相同位置的值匹配。例如，上面的image1的background-repeat值将是no-repeat。但是，当不同的属性具有不同数量的值时，会发生什么情况呢？答案是较小数量的值会循环—在上面的例子中有四个背景图像，但是只有两个背景位置值。前两个位置值将应用于前两个图像，然后它们将再次循环—image3将被赋予第一个位置值，image4将被赋予第二个位置值。
+
+#### 背景附加
+
+`background-attachment` 控制当滚轮滚动时，背景如何变化：
+
+- `scroll`: 使元素的背景在页面滚动时滚动。如果滚动了元素内容，则背景不会移动。实际上，背景被固定在页面的相同位置，所以它会随着页面的滚动而滚动。
+- `fixed`: 使元素的背景固定在视图端口上，这样当页面或元素内容滚动时，它就不会滚动。它将始终保持在屏幕上相同的位置。
+- `local`: 这个值是后来添加的(它只在Internet Explorer 9+中受支持，而其他的在IE4+中受支持)，因为滚动值相当混乱，在很多情况下并不能真正实现您想要的功能。局部值将背景固定在设置的元素上，因此当您滚动元素时，背景也随之滚动。
+
+#### 使用background这个缩写
+
+这里有一些规则，需要在简写背景属性时遵循，例如:
+
+- `background-color` 只能在逗号之后指定。
+- `background-size` 值只能包含在背景位置之后，用'/'字符分隔，例如：`center/80%`。
+
+#### border的一些特性
+
+通过使用[`border-radius`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-radius)属性和与方框的每个角相关的长边来实现方框的圆角。可以使用两个长度或百分比作为值，第一个值定义水平半径，第二个值定义垂直半径。在很多情况下，您将只传递一个值，这两个值都将使用。
+
+## 处理不同的文本方向
+
+#### 书写模式
+
+书写模式通过 `writting-mode` 来进行改变。如下面的会使文字变为竖向：
+
+```css
+h1 {
+  writing-mode: vertical-rl;
+}
+```
+
+`writting-mode` 对应的三个值是：
+
+- `horizontal-tb`: 块流向从上至下。对应的文本方向是横向的。
+- `vertical-rl`: 块流向从右向左。对应的文本方向是纵向的。
+- `vertical-lr`: 块流向从左向右。对应的文本方向是纵向的。
+
+当我们切换书写模式时，我们也在改变块和内联文本的方向。`horizontal-tb`书写模式下块的方向是从上到下的横向的，而 `vertical-rl`书写模式下块的方向是从右到左的纵向的。因此，块维度指的总是块在页面书写模式下的显示方向。而内联维度指的总是文本方向。 
+
+#### 书写模式改变后盒子的尺寸
+
+横向书写模式下，映射到`width`的属性被称作内联尺寸（[`inline-size`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/inline-size)）——内联维度的尺寸。而映射`height`的属性被称为块级尺寸（[`block-size`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/block-size)），这是块级维度的尺寸。下面的例子展示了替换掉`width`的`inline-size`是如何生效的。
+
+```css
+.box {
+  inline-size: 150px;
+}
+.horizontal {
+  writing-mode: horizontal-tb;
+}
+.vertical {
+  writing-mode: vertical-rl;
+}
+```
+
+![3](/images/2020-03-21/3.png)
+
+#### 更多的映射属性
+
+`margin-top`属性的映射是[`margin-block-start`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/margin-block-start)——总是指向块级维度开始处的边距。[`padding-left`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/padding-left)属性映射到 [`padding-inline-start`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/padding-inline-start)，这是应用到内联开始方向（这是该书写模式文本开始的地方）上的内边距。[`border-bottom`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-bottom)属性映射到的是[`border-block-end`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-block-end)，也就是块级维度结尾处的边框。
+
+#### 逻辑值
+
+目前为止我们看到的都是逻辑属性的名称。还有一些属性的取值是一些物理值（如`top`、`right`、`bottom`和`left`）。这些值同样拥有逻辑值映射（`block-start`、`inline-end`、`block-end`和`inline-start`）。
+
+## 溢出
+
+#### 溢出的例子
+
+第一个例子是，一个盒子，在块方向上已经受到`height`的限制。然后我们已经加了过多的内容，以至于盒子里面没有空间容纳。内容正在从盒子里面溢出，并让自己把盒子下面的段落弄得一团糟。
+
+第二个例子是一个单词，位于在内联方向上受到限制的盒子里面。盒子已经被做得小到无法放置那个单词的地步，于是那个单词就突破了盒子的限制。
+
+在盒子里面需要放置文本的时候，限制住块方向的尺寸是会引起问题的，因为可能会有比你在设计网站的时候所预计的文本更多的文本，或者文本变大了——比如用户增加字体大小的时候。
+
+#### 处理溢出
+
+overflow属性是处理溢出的常见方式：
+
+* `overflow: visible` 这是default，会使文本在超过盒子时溢出
+* `overflow: hidden` 隐藏溢出内容
+* `overflow: scroll` 设置滚动条来显示溢出的内容，但内容未溢出时滚动条仍然存在
+* `overflow-x: scroll` 仅仅允许在x方向上发生滚动
+* `overflow-y: scroll `仅仅允许在y方向上发生滚动
+* `overflow: scroll hidden `x方向上scroll，y方向上hidden
+
+## CSS中的值与单位
+
+#### 长度
+
+绝对长度：
+
+| 单位 | 名称         | 等价换算            |
+| :--- | :----------- | :------------------ |
+| `cm` | 厘米         | 1cm = 96px/2.54     |
+| `mm` | 毫米         | 1mm = 1/10th of 1cm |
+| `Q`  | 四分之一毫米 | 1Q = 1/40th of 1cm  |
+| `in` | 英寸         | 1in = 2.54cm = 96px |
+| `pc` | 十二点活字   | 1pc = 1/16th of 1in |
+| `pt` | 点           | 1pt = 1/72th of 1in |
+| `px` | 像素         | 1px = 1/96th of 1in |
+
+相对长度：
+
+| 单位   | 相对于            |
+| :----- | :---------------- |
+| `em`   | 父元素的字体大小  |
+| `ex`   | 字符“x”的高度     |
+| `ch`   | 数字“0”的宽度     |
+| `rem`  | 根元素的字体大小  |
+| `lh`   | 元素的line-height |
+| `vw`   | 视窗宽度的1%      |
+| `vh`   | 视窗高度的1%      |
+| `vmin` | 视窗较小尺寸的1%  |
+| `vmax` | 视图大尺寸的1%    |
+
+#### ems & rems & %
+
+首先，我们将16px设置为`<html>`元素的字体大小。
+
+em -
+
+**概括地说，em单位的意思是“父元素的字体大小”**。带有ems类的`<ul>`内的`<li>`元素从它们的父元素中获取大小。因此，每一个连续的嵌套级别都会**逐渐变大**，因为每个嵌套的字体大小都被设置为1.3em—是其父嵌套字体大小的1.3倍。
+
+rem -
+
+**概括地说，rem单位的意思是“根元素的字体大小”**。(“根em”的rem标准。)`<ul>`内的`<li>`元素和一个rems类从根元素`<html>`中获取它们的大小。这意味着每一个连续的嵌套层都**不会不断变大**。
+
+% -
+
+在许多情况下，百分比与长度的处理方法是一样的。百分比的问题在于，它们总是相对于其他值设置的。例如，如果将元素的字体大小设置为百分比，那么它将是元素父元素字体大小的百分比。如果使用百分比作为宽度值，那么它将是父值宽度的百分比。因此，如果`<ul>` 内的`<li>`通过百分比设置大小，每一个嵌套级别都会逐**渐变小**。
+
+#### 数字
+
+有些值接受数字，不添加任何单位。接受无单位数字的属性的一个例子是不透明度属性（`opacity` ），它控制元素的不透明度(它的透明程度)。此属性接受0(完全透明)和1(完全不透明)之间的数字。
+
+> **注意**: 当您在CSS中使用数字作为值时，它不应该用引号括起来。
+
+#### 颜色
+
+**十六进制值RGB**
+
+由于$16\times16 = 256$ ，因此RGB值由6位组成，每两位表示一个通道值。
+
+**rgb() & rgba() 函数**
+
+还可以使用RGBA颜色——它们的工作方式与RGB颜色完全相同，因此您可以使用任何RGB值，但是有第四个值表示颜色的alpha通道，它控制不透明度。如果将这个值设置为`0`，它将使颜色完全透明，而设置为`1`将使颜色完全不透明。介于两者之间的值提供了不同级别的透明度。
+
+> **注意**: 在颜色上设置alpha通道与使用我们前面看到的[`opacity`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/opacity)属性有一个关键区别。当你使用不透明度时，你让元素和它里面的所有东西都不透明，而使用RGBA颜色只让你指定的颜色不透明。
+
+## CSS中的尺寸
+
+#### 固有尺寸
+
+空的`<div>`是没有尺寸的，但他的宽会扩展到整个父容器，这是由块级元素的特性所决定的。
+
+但如果给`<div>`标签中添加文本，标签也就有了高度。元素的固有尺寸 — 由其所包含的内容决定。
+
+#### 设置具体的尺寸
+
+我们可以给`<div>`标签一个width和一个height，无论放什么元素进去，它都是这个尺寸，这就涉及到上面所谈到的溢出的问题。由于溢出的特性，在设置特定的高度时需要格外的小心。
+
+#### 设置百分数
+
+为父级元素宽度的百分比，没有设置，default 100%。
+
+且高度和宽度都是以内联尺寸的百分数来进行计算的。
+
+#### 最大与最小尺寸
+
+通过padding来指定最小尺寸：
+
+如果你有一个包含了变化容量的内容的盒子，而且你总是想让它**至少**有个确定的高度，你应该给它设置一个padding属性。盒子就会一直保持大于这个最小高度，但是如果有比这个盒子在最小高度状态下所能容纳的更多内容，那么盒子就会变大。
+
+max-width：//其实有点没有懂它的好处哈哈
+
+作为示例，如果你设定一个图像的属性为`width: 100%`，而且它的原始宽度小于容器，图像会被强制拉伸以变大，看起来像素更加明显。如果它的原始宽度大于容器，它则会溢出。两种情形都不是你想要看到的。
+
+这个技术是用来让图片**可响应**的，所以在更小的设备上浏览的时候，它们会合适地缩放。你无论怎样都不应该用这个技术先载入大原始尺寸的图片，再对它们在浏览器中进行缩放。图像应该合适地调整尺寸，以使它们不会比预计中展示时所需要的最大尺寸大。下载过大的图像会造成你的网站变慢，如果用户使用按量收费的网络连接，会让用户花更多钱。
+
+#### 视口单位
+
+`1vh`等于视口高度的1%，`1vw`则为视口宽度的1%。
+
+**嵌入的`<iframe>`的大小即是对上面示例而言的视口。**
+
+⚠️在你的设计中，根据视口改变物件的大小是很有用的。例如，如果你想要在你其他内容之前，有一个充满整个视口的视觉宣传段落，让你的页面的那个部分有100vh高的话，会把剩下的内容推到视口的下面，只有向下滚动文档的时候它们才会出现。
+
+## 图像、媒体和表单元素
+
+#### 图像
+
+object-fit：它有点类似于background-size。可以设置为cover, contain, fill（不维持长宽比，全部填满）。
+
+#### 布局中的替换元素
+
+在替换元素使用各式CSS布局技巧时，你可能深切地体会到他们的展现略微与其他元素不同，例如，在一个flex或者grid布局中，元素默认会把拉伸到充满整块区域。图像不会拉伸，而是会被对齐到网格区域或者弹性容器的起始处。
+
+#### 表单元素
+
+在一些浏览器中，表单元素默认不会继承字体样式，因此如果你想要确保你的表单填入区域使用body中或者一个父元素中定义的字体，你需要向你的CSS中加入这条规则。
+
+为了保证统一，将所有元素的内外边距均设为`0`是个好主意，然后在单独进行样式化控制的时候将这些加回来。
+
+除了上面提到的规则以外，你也应该在`<textarea>`上设置`overflow: auto` 以避免IE在不需要滚动条的时候显示滚动条。
+
+作为最后一步，我们可以将上面讨论过的各式属性包起来，成为以下的“表单重置”，以提供一个统一的在其上继续进行工作的地基：
+
+```css
+button, 
+input, 
+select, 
+textarea { 
+  font-family: inherit; 
+  font-size: 100%; 
+  box-sizing: border-box; 
+  padding: 0; margin: 0; 
+} 
+textarea { 
+  overflow: auto; 
+} 
+```
+
+> **备注**：通用样式表被许多开发者用作所有项目的一系列基础样式，典型就是那些做了和以上提到相似的事情的那些，在你开始自己的CSS作业前，它确保了跨浏览器的任何事情都被默认设定为统一样式。它们不像以往那么重要了，因为浏览器显著地要比以往更加统一。但是，如果你想要看一个例子，可以看看这个[Normalize.css](http://necolas.github.io/normalize.css/)，它被许多项目用作基础，是非常流行的样式表。
+
+## 表格
+
+- 在你的表上，给[`table-layout`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/table-layout)属性设置一个为`fixed`的值通常是一个好主意，因为它使表的行为在默认情况下更可预测。通常情况下，表列的尺寸会根据所包含的内容大小而变化，这会产生一些奇怪的结果。通过 `table-layout: fixed`，您可以根据列标题的宽度来规定列的宽度，然后适当地处理它们的内容。这就是为什么我们使用了`thead th:nth-child(n)` 选择了四个不同的标题([`:nth-child`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/:nth-child))选择器（“选择第n个子元素，它是一个顺序排列的[`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/th)元素，且其父元素是元素”）并给定了它们的百分比宽度。整个列宽度与列标题的宽度是一样的，这是一种很好的设定表列尺寸的方式。Chris Coyier在[Fixed Table Layouts](https://css-tricks.com/fixing-tables-long-strings/)中更详细地讨论了这一技术。
+
+  我们将它与一个100%的[`width`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/width)组合在一起，这意味着该表将填充它放入的任何容器，并且能很好的响应（虽然它仍然需要更多的工作来让它在窄屏宽度上看起来很好）。
+
+- 一个[`border-collapse`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-collapse)属性的`collapse`值对于任何表样式的工作来说都是一个标准的最佳实践。默认情况下，当您在表元素上设置边框时，它们之间将会有间隔。
+
+- 我们在整个表设置了一个[`border`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border)，这是必要的，因为我们将在表页眉和页脚后面设置一些边框——当你在表格外面没有一个边界而且以空隙结尾的时候，它看起来很奇怪，而且是不连贯的。
+
+- 我们在[`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/th)和[`](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/td)元素上设置了一些[`padding`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/padding)——这些元素使数据项有了一些空间，使表看起来更加清晰。
+
+⚠️在[Google Fonts](https://www.google.com/fonts)上找到了一种适合字体
+
+```html
+<link href='https://fonts.googleapis.com/css?family=Rock+Salt' rel='stylesheet' type='text/css'>
+```
+
+- 我们已经设置了一个全局无衬线字体;这纯粹是一种风格上的选择。我们还在和元素的标题上设置了自定义字体，这是一种很不错的、很有朋克风格的外观。
+- 我们在标题和单元格上设置了一些[`letter-spacing`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/letter-spacing)，因为我们觉得它有助于提高可读性。再次强调，这主要是一种风格上的选择。
+- 我们在中的表格单元中对文本进行了居中对齐，使它们与标题对齐。默认情况下，单元格被赋予了一个[`text-align`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-align)的`left`值，并且标题被赋予了一个`center`值，但是通常情况下，让两者对齐看起来更好。标题字体的默认粗体值足以区分它们的外观。
+- 我们在中对标题进行了右对齐，以便与它的数据点更好地关联。
+
+## Debugging
+
+[戳](https://developer.mozilla.org/zh-CN/docs/Learn/CSS/Building_blocks/Debugging_CSS)
+
+## 组织CSS
+
+尤其在你对站点的不同部分设置了很不同的样式的时候，你会想要有个包含了所有普适规则的样式表，还有包含了某些段落所需要的特定规则的更小的样式表。你可以将一个页面连接到多个样式表，层叠的一般规则会在这里生效，即连接的靠前的样式表里面的规则会比后面的有更高优先级。
+
+另一种组织CSS的方法是利用一些对于前端开发者可用的工具，它们让你可以稍微更程式化地编写CSS。有很多工具，我们将它们分成**预处理工具**和**后处理工具**。预处理工具以你的原文件为基础运行，将它们转化为样式表；后处理工具使用你已完成的样式表，然后对它做点手脚——也许是优化它以使它加载得更快。
+
+**预处理**
+
+最为流行的预处理工具是[Sass](https://sass-lang.com/)，这里不是Sass的教程，所以我只会简要地解释一些Sass能做的事情，在组织的时候真的会帮到你，即使你没有用到Sass的任何其他的独特功能。
+
+1. 定义变量
+
+```css
+$base-color: #c6538c;
+
+.alert {
+  border: 1px solid $base-color;
+}
+```
+
+2. 编译组件样式表
+
+我在上面提到了，一种组织CSS的方式是将样式表分成小的样式表。在使用Sass时，你可以在另一个层次上理解，然后得到许多小样式表——甚至到了每个组件都有一个独立样式表的地步。使用Sass中的include功能，这些都可以被编译为一个、或者少数几个真正链接到你的网站的样式表。
+
+在[这篇博文](https://www.lauraleeflores.com/blog/how-to-organize-your-css-files)里面，你可以看下一个开发者是如何处理这个问题的。
+
+**后处理**
+
+如果你对加入例如许多额外的注释和空格，增大你的样式表大小有所关心的话，那么后处理会通过在生产版本中略去任何不必要的东西的方式，优化CSS。后处理解决方案中，通过这种方式实现的一个例子是[cssnano](https://cssnano.co/)。
+
+END。
