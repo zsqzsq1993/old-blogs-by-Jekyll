@@ -1,0 +1,33 @@
+@import "variable";
+.sidebar-container {
+  h3 {
+    padding-top: 0.5rem;
+    padding-left: 1.2rem;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+  }
+  ul {
+    margin-bottom: 1.2rem;
+    padding: 0 0 0 1.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  li {
+    margin-right: 0.5rem;
+    margin-bottom: 1rem;
+    list-style: none;
+  }
+
+  a {
+    padding: 0.2rem 0.5rem;
+    color: $grey-dark;
+    border: 1px dashed $grey-medium;
+    border-radius: 5px;
+    &:hover{
+      border: 1px solid $orange;
+      color: $orange;
+    }
+  }
+}

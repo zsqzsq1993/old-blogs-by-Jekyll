@@ -1,0 +1,27 @@
+@import "variable";
+@import "mixins";
+.navbar{
+  background-color: $black-dark;
+  @include box-shadow;
+  #navbarNav {
+    justify-content: flex-end;
+  }
+  .nav-link{
+    font-size: 1rem;
+    color: white;
+    &:link,&:visited{
+      color: white;
+    }
+    &:hover{
+      color: $grey-medium;
+    }
+  }
+  #brand{
+    color: white;
+    font-family: $handwrite-style;
+    letter-spacing: 0.5rem;
+  }
+  #navbar-toggler-icon{
+    boder: white;
+  }
+}

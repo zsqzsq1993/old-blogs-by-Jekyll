@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "摘要 - MDN HTML Client-side validation"
-description: "Before submitting data to the server, it is important to ensure all required form controls are filled out, in the correct format."
+title: "摘要 - MDN Client-side validation"
+description: Ensure all required form controls are filled out.
 tags:
     - Excerpt
     - HTML

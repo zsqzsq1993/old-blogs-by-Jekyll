@@ -1,0 +1,10 @@
+                    {%- if site.documents -%}
+                    <h3>Docs</h3>
+                    <ul class="documents-list">
+                        {%- for document in site.useful-links -%}
+                        <li>
+                            <a href="{{document.links}}">{{document.title}}</a>
+                        </li>
+                        {%- endfor -%}
+                    </ul>
+                    {%- endif -%}

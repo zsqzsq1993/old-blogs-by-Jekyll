@@ -1,0 +1,13 @@
+@import "variable";
+.footer{
+  font-family: $footer-style;
+  background-color: $grey-light;
+  margin-bottom: 0;
+  color: $grey-medium;
+  a{
+    color: inherit;
+    &:hover{
+      color: $grey-dark;
+    }
+  }
+}

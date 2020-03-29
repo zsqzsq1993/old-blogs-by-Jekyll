@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "隔离日记2 - JavaScript 类型"
-description: "这是一篇关于JavaScript 高级程序设计第5章的读书笔记。"
+description: "一篇关于JavaScript高程序第5章的读书笔记。"
 tags: 
  - JavaScript
  - Diary
@@ -122,14 +122,14 @@ alter(colors.slice(1)); //[2,3,4,5]
 alter(colors.slice(1,3)); //[2,3]
 //splice
 let colors  = ["red","green","blue"];
-let removed = colors.splice(0,1); // removed = ["red"], colors = ["green","blue"]
+let removed = colors.splice(0,1); // removed = ["red"], _colors = ["green","blue"]
 
 removed = colors.splice(1,0,"yellow","orange");
-// removed = [], colors = ["green", "yellow","orange","blue"]
+// removed = [], _colors = ["green", "yellow","orange","blue"]
 
 removed = colors.splice(1,1,"red","purple");
 //removde = ["yellow"]
-//colors  = ["green","red","purple","orange","blue"]
+//_colors  = ["green","red","purple","orange","blue"]
 ```
 
 #### 6. Array 其他一些有趣的方法

@@ -1,0 +1,22 @@
+@import "variable";
+.paginator{
+  a{
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    margin: 2rem 0;
+    border:1px solid $grey-dark;
+    &:hover{
+      border: 1px solid $orange;
+      background-color: $orange;
+      color: white;
+    }
+  }
+  .next{
+    float: right;
+  }
+  .previous{
+    float: left;
+  }
+
+}

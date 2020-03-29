@@ -1,0 +1,25 @@
+@import "variable";
+@mixin font-size-by-screen($width, $font-size){
+  @media screen and (max-width: $width){
+    html{
+      font-size: $font-size;
+    }
+    header{
+      height: calc(17 * 1rem);
+    }
+  }
+}
+
+@mixin box-shadow{
+  box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.2),
+  25px 25px 50px 0 rgba(0,0,0,0.2);
+}
+
+//basic shadow
+@mixin text-shadow1{
+  text-shadow: 3px 3px 1px $grey-medium;
+}
+//more blur
+@mixin text-shadow2{
+  text-shadow: 3px 3px 7px $grey-medium;
+}

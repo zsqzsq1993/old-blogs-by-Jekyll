@@ -1,0 +1,20 @@
+@import "variable";
+
+.post-preview{
+  font-family: $default-style;
+  h2{
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+  .excerpt{
+    color: $grey-dark;
+    font-style: italic;
+    margin-top: 0.5rem;
+  }
+  .date{
+    font-family: $date-style;
+    color: $grey-medium;
+    font-style: italic;
+    border-bottom: 2px solid $grey-light;
+  }
+}

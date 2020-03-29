@@ -1,17 +1,32 @@
 ---
 layout: default
 ---
-{% include indexHeader.html %}
-<!-- main -->
-<div class="container">
-    <div class="row">
-        <!-- posts -->
-        <div class="col-lg-8
-                    offset-lg-2
-                    col-md-8
-                    offset-md-2">
-            {{content}}
+{%- include index-header.html -%}
+    <!-- main -->
+    <main class="container">
+        <div class="row">
+            <!-- posts -->
+            <div class="col-lg-8
+                        offset-lg-1
+                        col-md-8
+                        offset-md-1
+                        col-sm-12
+                        col-xs-12 post-list-container">
+                {{content}}
+            </div>
+            <!-- sidebar -->
+            <div class="col-lg-3
+                        col-md-3
+                        col-sm-12
+                        col-xs-12 sidebar-container">
+                <div class="tags">
+                    <!-- Feature tags -->
+                    {%- include tags.html -%}
+                </div>
+                <div class="documents">
+                    <!-- Fantastic blogs -->
+                    {%- include documents.html -%}
+                </div>
+            </div>
         </div>
-        <!-- sidebar -->
-    </div>
-</div>
+    </main>
